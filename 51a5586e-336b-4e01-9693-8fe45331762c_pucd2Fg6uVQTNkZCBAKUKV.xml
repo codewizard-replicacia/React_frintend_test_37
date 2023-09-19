@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="Model">
+            <EntityType HasStream="false" Name="ReportandAnalyze">
+                <Key>
+                    <PropertyRef Name="ExtCustId"/>
+                </Key>
+                <Property Name="ExtCustId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="BrowsingHistory" Type="Collection(Edm.String)" isUnique="false"/>
+                <Property Name="TimeSpentInMinutes" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="OrderId_Optional" Type="Edm.Int64" isUnique="false"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="SalesTeam">
+                <Key>
+                    <PropertyRef Name="EmpId"/>
+                </Key>
+                <Property Name="EmpId" Type="Edm.Int32" isUnique="true"/>
+                <Property Name="EmpDesignation" Type="Edm.String" isUnique="false"/>
+                <Property Name="Shiftdetails" Type="Edm.String" isUnique="false"/>
+                <Property Name="Qualification" Type="Edm.String" isUnique="false"/>
+                <Property Name="Phnum" Type="Edm.String" isUnique="false"/>
+                <Property Name="OrderId" Type="Edm.String" isUnique="false"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="CustomerOrder">
+                <Key>
+                    <PropertyRef Name="OrderId"/>
+                </Key>
+                <Property Name="OrderId" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="Quantity" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="LocationofOrder" Type="Edm.String" isUnique="false"/>
+                <Property Name="Phnum" Type="Edm.String" isUnique="false"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="Order">
+                <Key>
+                    <PropertyRef Name="OrderId"/>
+                </Key>
+                <Property Name="OrderId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="InventoriescountinCity" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="LocatationOfOrder" Type="Model.Location" isUnique="false"/>
+                <Property Name="DateOfOrder" Type="Edm.Date" isUnique="false"/>
+                <NavigationProperty Name="Customer" Type="Model.CustomerProfile"/>
+                <NavigationProperty Name="Items" Type="Collection(Model.LineItem)"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="ProdManagementTeam">
+                <Key>
+                    <PropertyRef Name="EmpId"/>
+                </Key>
+                <Property Name="EmpId" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="EmpDesignation" Type="Edm.String" isUnique="false"/>
+                <Property Name="PhoneNum" Type="Edm.String" isUnique="false"/>
+                <Property Name="TeamName" Type="Edm.String" isUnique="false"/>
+                <Property Name="PickedForDelivery" Type="Edm.Boolean" isUnique="false"/>
+                <Property Name="Status" Type="Model.OrderStatus" isUnique="false"/>
+                <NavigationProperty Name="OrdersToDeliver" Type="Collection(Model.Order)"/>
+                <NavigationProperty Name="Orderdeliverymanagement" Type="Collection(Model.Warehouse)"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="LineItem">
+                <Key>
+                    <PropertyRef Name="LineItemId"/>
+                </Key>
+                <Property Name="LineItemId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="Quantity" Type="Edm.Int32" isUnique="false"/>
+                <NavigationProperty Name="Product" Type="Model.Product"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="CustomerProfile">
+                <Key>
+                    <PropertyRef Name="CustomerID"/>
+                </Key>
+                <Property Name="CustomerID" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="Name" Type="Edm.String" isUnique="false"/>
+                <Property Name="PhoneNumber" Type="Edm.String" isUnique="false"/>
+                <Property Name="Address" Type="Model.Address" isUnique="false"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="Product">
+                <Key>
+                    <PropertyRef Name="ProductId"/>
+                </Key>
+                <Property Name="ProductId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="Name" Type="Edm.String" isUnique="true"/>
+                <Property Name="ProductDescription" Type="Edm.String" isUnique="false"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="StockInventory">
+                <Key>
+                    <PropertyRef Name="StockInventoryId"/>
+                </Key>
+                <Property Name="StockInventoryId" Type="Edm.Int64" isUnique="false"/>
+                <Property Name="StockCount" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="City" Type="Model.Location" isUnique="false"/>
+                <NavigationProperty Name="Product" Type="Model.Product"/>
+            </EntityType>
+            <EntityType HasStream="false" Name="Warehouse">
+                <Key>
+                    <PropertyRef Name="WarehouseId"/>
+                </Key>
+                <Property Name="WarehouseId" Type="Edm.Int32" isUnique="false"/>
+                <Property Name="WarehouseAddress" Type="Model.Address" isUnique="false"/>
+                <Property Name="WarehouseLocation" Type="Model.Location" isUnique="false"/>
+                <Property Name="Inventory" Type="Edm.String" isUnique="false"/>
+                <Property Name="WarehouseContact" Type="Edm.String" isUnique="false"/>
+                <NavigationProperty Name="ProductStock" Type="Collection(Model.StockInventory)"/>
+            </EntityType>
+            <EntityContainer Name="Container">
+                <EntitySet Name="ReportandAnalyzes" EntityType="Model.ReportandAnalyze"/>
+                <EntitySet Name="SalesTeams" EntityType="Model.SalesTeam"/>
+                <EntitySet Name="CustomerOrders" EntityType="Model.CustomerOrder"/>
+                <EntitySet Name="Orders" EntityType="Model.Order">
+                    <NavigationPropertyBinding Path="Customer" Target="CustomerProfiles"/>
+                    <NavigationPropertyBinding Path="Items" Target="LineItems"/>
+                </EntitySet>
+                <EntitySet Name="ProdManagementTeams" EntityType="Model.ProdManagementTeam">
+                    <NavigationPropertyBinding Path="OrdersToDeliver" Target="Orders"/>
+                    <NavigationPropertyBinding Path="Orderdeliverymanagement" Target="Warehouses"/>
+                </EntitySet>
+                <EntitySet Name="LineItems" EntityType="Model.LineItem">
+                    <NavigationPropertyBinding Path="Product" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="CustomerProfiles" EntityType="Model.CustomerProfile"/>
+                <EntitySet Name="Products" EntityType="Model.Product"/>
+                <EntitySet Name="StockInventories" EntityType="Model.StockInventory">
+                    <NavigationPropertyBinding Path="Product" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Warehouses" EntityType="Model.Warehouse">
+                    <NavigationPropertyBinding Path="ProductStock" Target="StockInventories"/>
+                </EntitySet>
+            </EntityContainer>
+            <ComplexType Name="Address">
+                <Property Name="HouseNumber" Type="Edm.String" isUnique="false"/>
+                <Property Name="HouseName" Type="Edm.String" isUnique="false"/>
+                <Property Name="Area" Type="Edm.String" isUnique="false"/>
+                <Property Name="Road" Type="Edm.String" isUnique="false"/>
+                <Property Name="City" Type="Edm.String" isUnique="false"/>
+                <Property Name="Country" Type="Edm.String" isUnique="false"/>
+                <Property Name="PinCode" Type="Edm.Int32" isUnique="false"/>
+            </ComplexType>
+            <EnumType Name="OrderStatus">
+                <Member Name="Accepted" Value="0"/>
+                <Member Name="Pending" Value="1"/>
+                <Member Name="Received_By" Value="2"/>
+                <Member Name="In_Transition" Value="3"/>
+            </EnumType>
+            <EnumType Name="Location">
+                <Member Name="Bangalore_Anekal" Value="0"/>
+                <Member Name="Bangalore_Yelahanka" Value="1"/>
+                <Member Name="Hyderabad_LBNagar" Value="2"/>
+                <Member Name="Hyderabad_Shamshabad" Value="3"/>
+            </EnumType>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

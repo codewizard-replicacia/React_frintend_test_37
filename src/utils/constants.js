@@ -1,0 +1,11 @@
+export const BASE_URL = "htttp://frontend.com"; //Temporarily using field; Enter Backend URL here e.g. http://3.133.64.67:8164/generated_app
+export const PATH_ORDER = "/Orders";
+export const PATH_SALESTEAM = "/SalesTeams";
+export const PATH_WAREHOUSE = "/Warehouses";
+export const PATH_STOCKINVENTORY = "/StockInventories";
+export const PATH_CUSTOMERORDER = "/CustomerOrders";
+export const PATH_LINEITEM = "/LineItems";
+export const PATH_PRODUCT = "/Products";
+export const PATH_REPORTANDANALYZE = "/ReportandAnalyzes";
+export const PATH_CUSTOMERPROFILE = "/CustomerProfiles";
+export const PATH_PRODMANAGEMENTTEAM = "/ProdManagementTeams";
